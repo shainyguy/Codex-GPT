@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Freelance Radar 2026</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #070b16;
+        --card: rgba(16, 24, 52, 0.8);
+        --neon: #60f8ff;
+        --purple: #8b5cf6;
+      }
+      * { box-sizing: border-box; font-family: Inter, system-ui, sans-serif; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background:
+          radial-gradient(circle at 10% 10%, #1b3b71 0%, transparent 30%),
+          radial-gradient(circle at 90% 30%, #4c1d95 0%, transparent 28%),
+          var(--bg);
+        color: #e5ecff;
+        display: grid;
+        place-items: center;
+        padding: 20px;
+      }
+      .app {
+        width: min(980px, 100%);
+        border: 1px solid rgba(96, 248, 255, 0.25);
+        background: linear-gradient(135deg, rgba(22, 29, 59, 0.9), rgba(10, 14, 33, 0.85));
+        backdrop-filter: blur(14px);
+        border-radius: 26px;
+        padding: 28px;
+        box-shadow: 0 30px 90px rgba(0, 0, 0, 0.4);
+      }
+      h1 { margin: 0; font-size: clamp(30px, 5vw, 54px); }
+      .tag { color: var(--neon); font-weight: 700; }
+      .grid {
+        margin-top: 22px;
+        display: grid;
+        gap: 14px;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid rgba(139, 92, 246, 0.35);
+        border-radius: 18px;
+        padding: 14px;
+      }
+      .pulse {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        background: #22c55e;
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+        animation: pulse 2s infinite;
+      }
+      @keyframes pulse {
+        70% { box-shadow: 0 0 0 16px rgba(34, 197, 94, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+      }
+      button {
+        margin-top: 20px;
+        border: 0;
+        padding: 13px 18px;
+        border-radius: 12px;
+        background: linear-gradient(90deg, var(--neon), var(--purple));
+        color: #02101f;
+        font-weight: 800;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="app">
+      <p class="tag">Freelance Radar • AI Boost</p>
+      <h1>Ловец жирных заказов</h1>
+      <p>Мониторинг 10+ источников. Уведомление за секунды. Генерация отклика одним тапом.</p>
+      <div class="pulse"><span class="dot"></span><span>Радар активен в реальном времени</span></div>
+      <section class="grid">
+        <article class="card"><b>Trial 3 дня</b><p>Без карты. Сразу ловите лиды.</p></article>
+        <article class="card"><b>690₽ / месяц</b><p>Окупается первым заказом.</p></article>
+        <article class="card"><b>GigaChat</b><p>Идеальный отклик за секунду.</p></article>
+        <article class="card"><b>ЮKassa</b><p>Быстрый и безопасный платеж.</p></article>
+      </section>
+      <button onclick="window.Telegram?.WebApp?.close()">Начать охоту 🚀</button>
+    </main>
+  </body>
+</html>
