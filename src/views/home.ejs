@@ -2,19 +2,29 @@
 <section class="hero">
   <div class="parallax layer l1"></div>
   <div class="parallax layer l2"></div>
+  <div class="glow g1"></div>
+  <div class="glow g2"></div>
   <div class="hero-content glass">
-    <p class="chip">2025/2026 trend design</p>
-    <h1>Платформа для обучения бьюти‑мастеров</h1>
-    <p>Продавайте авторские курсы, автоматизируйте покупки и получайте выплаты. Платформа удерживает комиссию <%= commissionPercent %>% с каждой продажи.</p>
+    <p class="chip">Beauty EdTech • trend 2025/2026</p>
+    <h1>Маркетплейс курсов для бьюти‑мастеров нового поколения</h1>
+    <p>Запускайте свои программы, автоматизируйте продажи и выплаты. Платформа удерживает <%= commissionPercent %>% с каждой оплаты, остальное получает преподаватель.</p>
     <div class="hero-actions">
       <a href="/register" class="btn">Стать автором</a>
-      <a href="#catalog" class="btn ghost">Смотреть курсы</a>
+      <a href="#catalog" class="btn ghost">Изучить каталог</a>
+    </div>
+    <div class="hero-kpis">
+      <div><span>Формат</span><strong>Видео + текст</strong></div>
+      <div><span>Монетизация</span><strong><%= commissionPercent %>% комиссия</strong></div>
+      <div><span>Запуск</span><strong>Railway-ready</strong></div>
     </div>
   </div>
 </section>
 
 <section id="catalog" class="section">
-  <h2>Каталог курсов</h2>
+  <div class="section-head">
+    <h2>Актуальные курсы</h2>
+    <p class="muted">Трендовые программы по макияжу, колористике, бровям, ногтям и уходу.</p>
+  </div>
   <div class="grid">
     <% courses.forEach(course => { %>
       <article class="card glass">
@@ -24,14 +34,14 @@
           <h3><%= course.title %></h3>
           <p><%= course.description.slice(0, 120) %>...</p>
           <p class="muted">Автор: <%= course.instructor_name %> · Продаж: <%= course.sales_count %></p>
-          <div class="row between">
+          <div class="row between card-footer-row">
             <strong><%= formatMoney(course.price_cents) %></strong>
             <a href="/courses/<%= course.id %>" class="btn small">Подробнее</a>
           </div>
         </div>
       </article>
     <% }) %>
-    <% if (!courses.length) { %><p>Пока нет опубликованных курсов.</p><% } %>
+    <% if (!courses.length) { %><p class="muted">Пока нет опубликованных курсов.</p><% } %>
   </div>
 </section>
 <%- include('partials/footer') %>
