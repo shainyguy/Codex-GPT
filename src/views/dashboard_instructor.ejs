@@ -2,22 +2,22 @@
 <section class="section">
   <h1>Кабинет преподавателя</h1>
   <div class="stats">
-    <div class="stat glass"><span>Оборот</span><strong><%= formatMoney(stats.gross) %></strong></div>
-    <div class="stat glass"><span>Комиссия платформы</span><strong><%= formatMoney(stats.platform) %></strong></div>
-    <div class="stat glass"><span>К выплате вам</span><strong><%= formatMoney(stats.payout) %></strong></div>
+    <div class="stat"><span>Оборот</span><strong><%= formatMoney(stats.gross) %></strong></div>
+    <div class="stat"><span>Комиссия платформы</span><strong><%= formatMoney(stats.platform) %></strong></div>
+    <div class="stat"><span>К выплате вам</span><strong><%= formatMoney(stats.payout) %></strong></div>
   </div>
-  <a href="/courses/new" class="btn">+ Новый курс</a>
-  <div class="grid">
+  <div class="row">
+    <a class="btn" href="/courses/new">+ Новый курс</a>
+    <a class="btn ghost" href="/instructor/profile">Профиль мастера</a>
+  </div>
+  <section class="section grid">
     <% courses.forEach(course => { %>
-      <article class="card glass">
+      <article class="card">
         <h3><%= course.title %></h3>
-        <p><%= formatMoney(course.price_cents) %> · <%= course.category %></p>
-        <div class="row between">
-          <a class="btn small" href="/courses/<%= course.id %>">Открыть</a>
-          <form method="post" action="/courses/<%= course.id %>?_method=DELETE"><button class="btn small ghost">Удалить</button></form>
-        </div>
+        <p><%= course.category %> · <%= formatMoney(course.price_cents) %></p>
+        <div class="row"><a class="btn small" href="/courses/<%= course.id %>/builder">Конструктор</a><a class="btn small ghost" href="/courses/<%= course.id %>">Страница курса</a></div>
       </article>
     <% }) %>
-  </div>
+  </section>
 </section>
 <%- include('partials/footer') %>

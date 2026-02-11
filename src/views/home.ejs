@@ -1,47 +1,41 @@
-<%- include('partials/header', { title: 'BeautyScale — Маркетплейс курсов' }) %>
+<%- include('partials/header', { title: 'BeautyScale — курсы для бьюти-мастеров' }) %>
 <section class="hero">
-  <div class="parallax layer l1"></div>
-  <div class="parallax layer l2"></div>
-  <div class="glow g1"></div>
-  <div class="glow g2"></div>
-  <div class="hero-content glass">
-    <p class="chip">Beauty EdTech • trend 2025/2026</p>
-    <h1>Маркетплейс курсов для бьюти‑мастеров нового поколения</h1>
-    <p>Запускайте свои программы, автоматизируйте продажи и выплаты. Платформа удерживает <%= commissionPercent %>% с каждой оплаты, остальное получает преподаватель.</p>
-    <div class="hero-actions">
-      <a href="/register" class="btn">Стать автором</a>
-      <a href="#catalog" class="btn ghost">Изучить каталог</a>
-    </div>
-    <div class="hero-kpis">
-      <div><span>Формат</span><strong>Видео + текст</strong></div>
-      <div><span>Монетизация</span><strong><%= commissionPercent %>% комиссия</strong></div>
-      <div><span>Запуск</span><strong>Railway-ready</strong></div>
-    </div>
+  <span class="chip">Минимализм • светлая тема</span>
+  <h1>Обучающая платформа для бьюти-мастеров</h1>
+  <p>Курсы, домашка, отзывы, портфолио мастеров и безопасная оплата. Комиссия платформы: <%= commissionPercent %>%.</p>
+  <div class="row">
+    <a href="/register" class="btn">Стать преподавателем</a>
+    <a href="#catalog" class="btn ghost">Выбрать курс</a>
   </div>
 </section>
 
+<section class="section">
+  <form class="filters" method="get" action="/">
+    <select name="category"><option value="">Категория</option><% categoryOptions.forEach(c => { %><option <%= q.category===c?'selected':'' %>><%= c %></option><% }) %></select>
+    <select name="level"><option value="">Уровень</option><% levelOptions.forEach(l => { %><option <%= q.level===l?'selected':'' %>><%= l %></option><% }) %></select>
+    <select name="language"><option value="">Язык</option><% languageOptions.forEach(l => { %><option <%= q.language===l?'selected':'' %>><%= l %></option><% }) %></select>
+    <input name="maxPrice" type="number" step="0.01" value="<%= q.maxPrice||'' %>" placeholder="Макс. цена" />
+    <input name="minRating" type="number" min="1" max="5" step="0.1" value="<%= q.minRating||'' %>" placeholder="Рейтинг от" />
+    <button class="btn">Искать</button>
+  </form>
+</section>
+
 <section id="catalog" class="section">
-  <div class="section-head">
-    <h2>Актуальные курсы</h2>
-    <p class="muted">Трендовые программы по макияжу, колористике, бровям, ногтям и уходу.</p>
-  </div>
+  <h2>Каталог курсов</h2>
   <div class="grid">
     <% courses.forEach(course => { %>
-      <article class="card glass">
+      <article class="card">
         <div class="cover" style="background-image:url('<%= course.thumbnail_url || 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?q=80&w=1200&auto=format&fit=crop' %>')"></div>
-        <div class="card-body">
-          <p class="muted"><%= course.category %> · <%= course.level %></p>
-          <h3><%= course.title %></h3>
-          <p><%= course.description.slice(0, 120) %>...</p>
-          <p class="muted">Автор: <%= course.instructor_name %> · Продаж: <%= course.sales_count %></p>
-          <div class="row between card-footer-row">
-            <strong><%= formatMoney(course.price_cents) %></strong>
-            <a href="/courses/<%= course.id %>" class="btn small">Подробнее</a>
-          </div>
+        <p><%= course.category %> · <%= course.level %> · <%= course.language %></p>
+        <h3><%= course.title %></h3>
+        <p><%= course.description.slice(0, 110) %>...</p>
+        <p>Автор: <a href="/instructors/<%= course.instructor_id %>"><%= course.instructor_name %></a></p>
+        <div class="row between">
+          <strong><%= formatMoney(course.price_cents) %></strong>
+          <a class="btn small" href="/courses/<%= course.id %>">Подробнее</a>
         </div>
       </article>
     <% }) %>
-    <% if (!courses.length) { %><p class="muted">Пока нет опубликованных курсов.</p><% } %>
   </div>
 </section>
 <%- include('partials/footer') %>

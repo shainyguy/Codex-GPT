@@ -1,26 +1,65 @@
 <%- include('partials/header', { title: course.title }) %>
-<section class="section">
-  <div class="course-head glass">
-    <h1><%= course.title %></h1>
-    <p><%= course.description %></p>
-    <p class="muted">Автор: <%= course.instructor_name %> · <%= course.category %> · <%= course.level %></p>
-    <p><strong><%= formatMoney(course.price_cents) %></strong></p>
-    <p class="muted">Комиссия платформы: <%= formatMoney(platformFeeCents) %>, автор получает: <%= formatMoney(instructorEarningsCents) %></p>
-    <% if (currentUser && currentUser.role === 'student' && !purchased) { %>
-      <form method="post" action="/courses/<%= course.id %>/purchase"><button class="btn">Купить курс</button></form>
-    <% } else if (purchased) { %>
-      <p class="chip">Курс куплен</p>
-    <% } %>
-  </div>
+<section class="section card">
+  <h1><%= course.title %></h1>
+  <p><%= course.description %></p>
+  <p><a href="/instructors/<%= course.instructor_id %>"><%= course.instructor_name %></a> · рейтинг мастера: <%= Number(course.instructor_rating||0).toFixed(1) %></p>
+  <p><strong><%= formatMoney(course.price_cents) %></strong> · платформа: <%= formatMoney(platformFeeCents) %> · мастер: <%= formatMoney(instructorEarningsCents) %></p>
 
+  <% if (currentUser && currentUser.role === 'student' && (!purchase || purchase.payment_status !== 'paid')) { %>
+    <form method="post" action="/courses/<%= course.id %>/purchase"><button class="btn">Оплатить через ЮKassa / demo</button></form>
+  <% } else if (purchase && purchase.payment_status === 'paid') { %>
+    <p class="chip">Курс оплачен</p>
+    <form method="post" action="/purchases/<%= purchase.id %>/refund"><button class="btn ghost small">Запросить возврат (14 дней)</button></form>
+  <% } %>
+</section>
+
+<section class="section">
   <h2>Программа</h2>
-  <div class="glass pad">
-    <% lessons.forEach(lesson => { %>
-      <article>
-        <h3><%= lesson.position %>. <%= lesson.title %></h3>
-        <p><%= lesson.content %></p>
-      </article>
-    <% }) %>
+  <% modules.forEach(mod => { %>
+    <article class="card">
+      <h3><%= mod.title %></h3>
+      <ul class="list-clean">
+        <% mod.lessons.forEach(lesson => { %>
+          <li><%= lesson.title %> (<%= lesson.duration_min %> мин)
+            <% if (purchase && purchase.payment_status === 'paid' && currentUser && currentUser.role==='student') { %>
+              — <a href="/lessons/<%= lesson.id %>/watch">смотреть</a>
+            <% } %>
+          </li>
+        <% }) %>
+      </ul>
+    </article>
+  <% }) %>
+</section>
+
+<section class="section grid">
+  <article class="card">
+    <h3>Материалы</h3>
+    <ul class="list-clean">
+      <% materials.forEach(m => { %>
+        <li><strong><%= m.title %></strong> — <%= m.type %>
+          <% if (m.content_url) { %><a href="<%= m.content_url %>" target="_blank"> открыть</a><% } %>
+        </li>
+      <% }) %>
+    </ul>
+  </article>
+
+  <article class="card">
+    <h3>Отзывы</h3>
+    <% reviews.forEach(r => { %><p><strong><%= r.student_name %></strong>: <%= r.rating %>/5 — <%= r.comment %></p><% }) %>
+    <% if (currentUser && currentUser.role==='student' && purchase && purchase.payment_status==='paid') { %>
+      <form method="post" action="/courses/<%= course.id %>/review" class="stack">
+        <input name="rating" type="number" min="1" max="5" placeholder="Оценка 1-5" required />
+        <textarea name="comment" placeholder="Ваш отзыв"></textarea>
+        <button class="btn small">Оставить отзыв</button>
+      </form>
+    <% } %>
+  </article>
+</section>
+
+<section class="section card">
+  <h3>Похожие курсы</h3>
+  <div class="row">
+    <% similarCourses.forEach(c => { %><a class="btn ghost small" href="/courses/<%= c.id %>"><%= c.title %> — <%= formatMoney(c.price_cents) %></a><% }) %>
   </div>
 </section>
 <%- include('partials/footer') %>

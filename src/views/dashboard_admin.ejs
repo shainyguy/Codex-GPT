@@ -2,15 +2,13 @@
 <section class="section">
   <h1>Админ панель</h1>
   <div class="stats">
-    <div class="stat glass"><span>Общий оборот</span><strong><%= formatMoney(stats.gross) %></strong></div>
-    <div class="stat glass"><span>Доход платформы</span><strong><%= formatMoney(stats.commission) %></strong></div>
-    <div class="stat glass"><span>Количество продаж</span><strong><%= stats.sales %></strong></div>
+    <div class="stat"><span>Общий оборот</span><strong><%= formatMoney(stats.gross) %></strong></div>
+    <div class="stat"><span>Доход платформы</span><strong><%= formatMoney(stats.commission) %></strong></div>
+    <div class="stat"><span>Количество продаж</span><strong><%= stats.sales %></strong></div>
   </div>
-  <h2>Топ курсов</h2>
-  <div class="glass pad">
-    <% topCourses.forEach(c => { %>
-      <p><strong><%= c.title %></strong> — продаж: <%= c.sales %>, выручка: <%= formatMoney(c.revenue) %></p>
-    <% }) %>
-  </div>
+  <article class="card">
+    <h3>Последние курсы</h3>
+    <ul class="list-clean"><% topCourses.forEach(c=>{ %><li><%= c.title %></li><% }) %></ul>
+  </article>
 </section>
 <%- include('partials/footer') %>

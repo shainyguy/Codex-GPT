@@ -1,7 +1,7 @@
 <%- include('partials/header', { title: 'Вход' }) %>
-<section class="section narrow glass">
+<section class="section narrow card">
   <h1>Вход</h1>
-  <% if (error) { %><p class="error"><%= error %></p><% } %>
+  <% if (error) { %><p><%= error %></p><% } %>
   <form method="post" action="/login" class="stack">
     <input type="email" name="email" placeholder="Email" required />
     <input type="password" name="password" placeholder="Пароль" required />

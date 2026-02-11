@@ -1,0 +1,27 @@
+<%- include('partials/header', { title: lesson.title }) %>
+<section class="section card">
+  <h1><%= lesson.title %></h1>
+  <p>Курс: <%= lesson.course_title %></p>
+  <% if (lesson.video_url) { %>
+    <div class="card">
+      <p>Видео (защита: лимит 2 устройства + watermark)</p>
+      <video controls width="100%" src="<%= lesson.video_url %>"></video>
+    </div>
+  <% } %>
+  <article class="card">
+    <h3>Домашка</h3>
+    <% homework.forEach(h => { %>
+      <div class="card">
+        <strong><%= h.title %></strong>
+        <p><%= h.instructions %></p>
+        <form method="post" action="/homework/<%= h.id %>/submit" class="stack">
+          <input name="media_url" placeholder="Ссылка на фото/видео результата" />
+          <textarea name="answer_text" placeholder="Комментарий"></textarea>
+          <button class="btn small">Отправить на проверку</button>
+        </form>
+      </div>
+    <% }) %>
+  </article>
+</section>
+<div class="watermark">Покупатель: <%= watermark %></div>
+<%- include('partials/footer') %>
