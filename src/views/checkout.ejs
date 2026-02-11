@@ -1,0 +1,17 @@
+<%- include('partials/header', { title: 'Оплата курса' }) %>
+<section class="section narrow card">
+  <h1>Оплата курса</h1>
+  <p><strong><%= course.title %></strong></p>
+  <p>Цена: <%= formatMoney(course.price_cents) %></p>
+  <form method="get" action="/courses/<%= course.id %>/checkout" class="stack">
+    <input name="promocode" value="<%= promocode %>" placeholder="Промокод (например WELCOME10)" />
+    <button class="btn ghost">Применить</button>
+  </form>
+  <p>Скидка: <%= formatMoney(discount) %></p>
+  <p><strong>Итого: <%= formatMoney(finalAmount) %></strong></p>
+  <form method="post" action="/courses/<%= course.id %>/purchase" class="stack">
+    <input type="hidden" name="promocode" value="<%= promocode %>" />
+    <button class="btn">Оплатить (ЮKassa / demo)</button>
+  </form>
+</section>
+<%- include('partials/footer') %>

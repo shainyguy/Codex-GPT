@@ -1,1 +1,17 @@
-<%- include('partials/header', { title: 'Модерация курсов' }) %><section class="section card"><h1>Модерация курсов</h1><p>Проверка и публикация курсов.</p></section><%- include('partials/footer') %>
+<%- include('partials/header', { title: 'Модерация курсов' }) %>
+<section class="section">
+  <h1>Модерация курсов</h1>
+  <% rows.forEach(r => { %>
+    <article class="card row between">
+      <div>
+        <strong><%= r.title %></strong>
+        <p>Автор: <%= r.instructor_name %> · Статус: <%= r.published ? 'опубликован' : 'на модерации' %></p>
+      </div>
+      <div class="row">
+        <form method="post" action="/admin/moderation/<%= r.id %>"><input type="hidden" name="action" value="publish" /><button class="btn small">Одобрить</button></form>
+        <form method="post" action="/admin/moderation/<%= r.id %>"><input type="hidden" name="action" value="reject" /><button class="btn small ghost">Отклонить</button></form>
+      </div>
+    </article>
+  <% }) %>
+</section>
+<%- include('partials/footer') %>

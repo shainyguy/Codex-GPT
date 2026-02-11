@@ -17,7 +17,7 @@
     <aside class="card">
       <h2><%= formatMoney(course.price_cents) %></h2>
       <% if (currentUser && currentUser.role === 'student' && (!purchase || purchase.payment_status !== 'paid')) { %>
-        <form method="post" action="/courses/<%= course.id %>/purchase" class="stack"><button class="btn">Купить курс</button><button class="btn ghost" type="button">В рассрочку</button></form>
+        <a class="btn" href="/courses/<%= course.id %>/checkout">Купить курс</a><button class="btn ghost" type="button">В рассрочку</button>
       <% } else if (purchase && purchase.payment_status === 'paid') { %>
         <p class="chip">Курс оплачен</p>
       <% } %>

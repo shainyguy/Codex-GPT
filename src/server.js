@@ -466,6 +466,19 @@ app.get('/courses/:id', (req, res) => {
   });
 });
 
+app.get('/courses/:id/checkout', requireAuth, requireRole('student'), (req, res) => {
+  const course = db.prepare('SELECT * FROM courses WHERE id = ? AND published = 1').get(req.params.id);
+  if (!course) return res.status(404).send('Курс не найден');
+  const promoRaw = String(req.query.promocode || '').toUpperCase();
+  const discount = promoRaw === 'WELCOME10' ? Math.round(course.price_cents * 0.1) : 0;
+  res.render('checkout', {
+    course,
+    promocode: promoRaw,
+    discount,
+    finalAmount: course.price_cents - discount
+  });
+});
+
 app.post('/courses/:id/purchase', requireAuth, requireRole('student'), async (req, res) => {
   const course = db.prepare('SELECT * FROM courses WHERE id = ? AND published = 1').get(req.params.id);
   if (!course) return res.status(404).send('Курс не найден');
@@ -473,19 +486,22 @@ app.post('/courses/:id/purchase', requireAuth, requireRole('student'), async (re
   const existing = db.prepare('SELECT * FROM purchases WHERE course_id = ? AND student_id = ?').get(course.id, req.session.user.id);
   if (existing && existing.payment_status === 'paid') return res.redirect(`/courses/${course.id}`);
 
-  const platformFeeCents = Math.round(course.price_cents * PLATFORM_COMMISSION_RATE);
-  const instructorEarningsCents = course.price_cents - platformFeeCents;
+  const promoRaw = String(req.body.promocode || '').toUpperCase();
+  const discount = promoRaw === 'WELCOME10' ? Math.round(course.price_cents * 0.1) : 0;
+  const finalAmount = Math.max(0, course.price_cents - discount);
+  const platformFeeCents = Math.round(finalAmount * PLATFORM_COMMISSION_RATE);
+  const instructorEarningsCents = finalAmount - platformFeeCents;
   let purchaseId = existing ? existing.id : null;
 
   if (!purchaseId) {
     purchaseId = db.prepare(`INSERT INTO purchases (course_id, student_id, amount_cents, platform_fee_cents, instructor_earnings_cents, payment_status) VALUES (?, ?, ?, ?, ?, 'pending')`)
-      .run(course.id, req.session.user.id, course.price_cents, platformFeeCents, instructorEarningsCents).lastInsertRowid;
+      .run(course.id, req.session.user.id, finalAmount, platformFeeCents, instructorEarningsCents).lastInsertRowid;
   }
 
   if (YOOKASSA_SHOP_ID && YOOKASSA_SECRET_KEY) {
     try {
       const yk = await createYooKassaPayment({
-        amountRub: course.price_cents / 100,
+        amountRub: finalAmount / 100,
         description: `Оплата курса: ${course.title}`,
         returnUrl: `${req.protocol}://${req.get('host')}/payments/success?purchase=${purchaseId}`,
         idempotenceKey: crypto.randomUUID()
@@ -691,10 +707,21 @@ app.get('/blog', (req, res) => res.render('blog'));
 app.get('/privacy', (req, res) => res.render('static_page', { title: 'Политика конфиденциальности', content: 'Мы защищаем ваши персональные данные.' }));
 app.get('/terms', (req, res) => res.render('static_page', { title: 'Пользовательское соглашение', content: 'Условия использования платформы.' }));
 
-app.get('/admin/moderation', requireAuth, requireRole('admin'), (req, res) => res.render('admin_moderation'));
+app.get('/admin/moderation', requireAuth, requireRole('admin'), (req, res) => {
+  const rows = db.prepare(`SELECT c.id,c.title,c.published,u.name instructor_name FROM courses c JOIN users u ON u.id = c.instructor_id ORDER BY c.created_at DESC`).all();
+  res.render('admin_moderation', { rows });
+});
+
+app.post('/admin/moderation/:courseId', requireAuth, requireRole('admin'), (req, res) => {
+  const publish = req.body.action === 'publish' ? 1 : 0;
+  db.prepare('UPDATE courses SET published = ? WHERE id = ?').run(publish, req.params.courseId);
+  res.redirect('/admin/moderation');
+});
 app.get('/admin/users', requireAuth, requireRole('admin'), (req, res) => res.render('admin_users', { users: db.prepare('SELECT id,name,email,role,created_at FROM users ORDER BY created_at DESC').all() }));
 app.get('/admin/finances', requireAuth, requireRole('admin'), (req, res) => res.render('admin_finances', { rows: db.prepare('SELECT * FROM purchases ORDER BY created_at DESC').all() }));
 app.get('/admin/complaints', requireAuth, requireRole('admin'), (req, res) => res.render('admin_complaints'));
 app.get('/admin/analytics', requireAuth, requireRole('admin'), (req, res) => res.render('admin_analytics'));
+
+app.get('/spec', (req, res) => res.render('spec'));
 
 app.listen(PORT, () => console.log(`BeautyScale running on http://localhost:${PORT}`));
