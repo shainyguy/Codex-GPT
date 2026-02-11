@@ -1,0 +1,3 @@
+<%- include('partials/header', { title: 'Ученики' }) %>
+<section class="section"><h1>Ученики</h1><% students.forEach(s=>{ %><article class="card"><p><strong><%= s.name %></strong> (<%= s.email %>) — <%= s.title %></p></article><% }) %></section>
+<%- include('partials/footer') %>

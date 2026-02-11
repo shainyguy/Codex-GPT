@@ -140,6 +140,32 @@ function migrate() {
       created_at TEXT DEFAULT CURRENT_TIMESTAMP,
       UNIQUE(purchase_id, device_hash)
     );
+
+
+    CREATE TABLE IF NOT EXISTS favorites (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      student_id INTEGER NOT NULL,
+      course_id INTEGER NOT NULL,
+      UNIQUE(student_id, course_id)
+    );
+
+    CREATE TABLE IF NOT EXISTS certificates_issued (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      student_id INTEGER NOT NULL,
+      course_id INTEGER NOT NULL,
+      cert_code TEXT NOT NULL UNIQUE,
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP
+    );
+
+    CREATE TABLE IF NOT EXISTS before_after_results (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      student_id INTEGER NOT NULL,
+      course_id INTEGER NOT NULL,
+      before_url TEXT DEFAULT '',
+      after_url TEXT DEFAULT '',
+      caption TEXT DEFAULT '',
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP
+    );
   `);
 
   const adminEmail = process.env.ADMIN_EMAIL || 'admin@beauty.local';
@@ -218,17 +244,18 @@ function refreshInstructorRating(instructorId) {
 }
 
 app.get('/', (req, res) => {
-  const { category = '', level = '', language = '', maxPrice = '', minRating = '' } = req.query;
+  const { q = '', category = '', level = '', language = '', maxPrice = '', minRating = '' } = req.query;
   const filters = ['c.published = 1'];
   const params = [];
+  if (q) { filters.push('(c.title LIKE ? OR c.description LIKE ?)'); params.push(`%${q}%`, `%${q}%`); }
   if (category) { filters.push('c.category = ?'); params.push(category); }
   if (level) { filters.push('c.level = ?'); params.push(level); }
   if (language) { filters.push('c.language = ?'); params.push(language); }
   if (maxPrice) { filters.push('c.price_cents <= ?'); params.push(Math.round(Number(maxPrice) * 100)); }
-  if (minRating) { filters.push('COALESCE(avg_rating,0) >= ?'); params.push(Number(minRating)); }
+  if (minRating) { filters.push('COALESCE((SELECT AVG(r.rating) FROM reviews r WHERE r.course_id = c.id), 0) >= ?'); params.push(Number(minRating)); }
 
   const courses = db.prepare(`
-    SELECT c.*, u.name AS instructor_name, u.rating,
+    SELECT c.*, u.name AS instructor_name, u.id instructor_id, u.rating,
       (SELECT COUNT(*) FROM purchases p WHERE p.course_id = c.id AND p.payment_status='paid') sales_count,
       (SELECT AVG(r.rating) FROM reviews r WHERE r.course_id = c.id) AS avg_rating
     FROM courses c
@@ -237,7 +264,20 @@ app.get('/', (req, res) => {
     ORDER BY c.created_at DESC
   `).all(...params);
 
-  res.render('home', { courses, categoryOptions, levelOptions, languageOptions, q: req.query });
+  const popularCourses = db.prepare(`
+    SELECT c.id, c.title, c.price_cents, c.thumbnail_url,
+    COALESCE((SELECT AVG(r.rating) FROM reviews r WHERE r.course_id = c.id), 0) as rating
+    FROM courses c
+    WHERE c.published = 1
+    ORDER BY rating DESC, c.created_at DESC
+    LIMIT 6
+  `).all();
+
+  const topMasters = db.prepare("SELECT id,name,rating,specialization FROM users WHERE role='instructor' ORDER BY rating DESC, created_at DESC LIMIT 8").all();
+  const beforeAfter = db.prepare("SELECT * FROM before_after_results ORDER BY created_at DESC LIMIT 6").all();
+  const testimonials = db.prepare("SELECT r.rating, r.comment, u.name as student_name FROM reviews r JOIN users u ON u.id = r.student_id ORDER BY r.created_at DESC LIMIT 6").all();
+
+  res.render('home', { courses, popularCourses, topMasters, beforeAfter, testimonials, categoryOptions, levelOptions, languageOptions, q: req.query });
 });
 
 app.get('/register', (req, res) => res.render('register', { error: null }));
@@ -527,5 +567,134 @@ app.post('/courses/:id/review', requireAuth, requireRole('student'), (req, res) 
   refreshInstructorRating(instructorId);
   res.redirect(`/courses/${req.params.id}`);
 });
+
+
+
+app.get('/masters', (req, res) => {
+  const masters = db.prepare("SELECT id,name,specialization,experience_years,rating,portfolio_text FROM users WHERE role='instructor' ORDER BY rating DESC, created_at DESC").all();
+  res.render('masters', { masters });
+});
+
+app.get('/forgot-password', (req, res) => res.render('forgot_password', { sent: req.query.sent }));
+app.post('/forgot-password', (req, res) => res.redirect('/forgot-password?sent=1'));
+
+app.post('/favorites/:courseId', requireAuth, requireRole('student'), (req, res) => {
+  db.prepare('INSERT OR IGNORE INTO favorites (student_id, course_id) VALUES (?, ?)').run(req.session.user.id, req.params.courseId);
+  res.redirect(req.get('referer') || '/dashboard');
+});
+
+app.post('/courses/:id/certify', requireAuth, requireRole('student'), (req, res) => {
+  const purchase = db.prepare("SELECT id FROM purchases WHERE student_id=? AND course_id=? AND payment_status='paid'").get(req.session.user.id, req.params.id);
+  if (!purchase) return res.status(403).send('Сначала купите курс');
+  const code = `BS-${req.params.id}-${req.session.user.id}-${Date.now()}`;
+  db.prepare('INSERT INTO certificates_issued (student_id, course_id, cert_code) VALUES (?,?,?)').run(req.session.user.id, req.params.id, code);
+  res.redirect('/dashboard/student/certificates');
+});
+
+app.post('/courses/:id/results', requireAuth, requireRole('student'), (req, res) => {
+  db.prepare('INSERT INTO before_after_results (student_id, course_id, before_url, after_url, caption) VALUES (?, ?, ?, ?, ?)')
+    .run(req.session.user.id, req.params.id, req.body.before_url || '', req.body.after_url || '', req.body.caption || '');
+  res.redirect(`/courses/${req.params.id}`);
+});
+
+app.get('/dashboard/student/progress', requireAuth, requireRole('student'), (req, res) => {
+  const progress = db.prepare(`
+    SELECT c.title, COUNT(l.id) total_lessons,
+      SUM(CASE WHEN l.id IN (SELECT lesson_id FROM homework_tasks ht JOIN homework_submissions hs ON hs.homework_task_id = ht.id WHERE hs.student_id = ?) THEN 1 ELSE 0 END) completed_items
+    FROM purchases p
+    JOIN courses c ON c.id = p.course_id
+    JOIN modules m ON m.course_id = c.id
+    JOIN lessons l ON l.module_id = m.id
+    WHERE p.student_id = ? AND p.payment_status='paid'
+    GROUP BY c.id
+  `).all(req.session.user.id, req.session.user.id);
+  res.render('student_progress', { progress });
+});
+
+app.get('/dashboard/student/certificates', requireAuth, requireRole('student'), (req, res) => {
+  const certs = db.prepare(`SELECT ci.*, c.title FROM certificates_issued ci JOIN courses c ON c.id = ci.course_id WHERE ci.student_id = ? ORDER BY ci.created_at DESC`).all(req.session.user.id);
+  res.render('student_certificates', { certs });
+});
+
+app.get('/dashboard/student/favorites', requireAuth, requireRole('student'), (req, res) => {
+  const favorites = db.prepare(`SELECT c.* FROM favorites f JOIN courses c ON c.id = f.course_id WHERE f.student_id = ?`).all(req.session.user.id);
+  res.render('student_favorites', { favorites });
+});
+
+app.get('/dashboard/student/purchases', requireAuth, requireRole('student'), (req, res) => {
+  const purchases = db.prepare(`SELECT p.*, c.title FROM purchases p JOIN courses c ON c.id = p.course_id WHERE p.student_id = ? ORDER BY p.created_at DESC`).all(req.session.user.id);
+  res.render('student_purchases', { purchases });
+});
+
+app.get('/dashboard/student/settings', requireAuth, requireRole('student'), (req, res) => {
+  const profile = db.prepare('SELECT * FROM users WHERE id = ?').get(req.session.user.id);
+  res.render('student_settings', { profile, saved: req.query.saved });
+});
+app.post('/dashboard/student/settings', requireAuth, requireRole('student'), (req, res) => {
+  db.prepare('UPDATE users SET name=? WHERE id=?').run(req.body.name || 'Ученик', req.session.user.id);
+  req.session.user.name = req.body.name || req.session.user.name;
+  res.redirect('/dashboard/student/settings?saved=1');
+});
+
+app.get('/dashboard/instructor/students', requireAuth, requireRole('instructor'), (req, res) => {
+  const students = db.prepare(`
+    SELECT u.name, u.email, c.title, p.created_at
+    FROM purchases p JOIN users u ON u.id=p.student_id JOIN courses c ON c.id=p.course_id
+    WHERE c.instructor_id=? AND p.payment_status='paid'
+    ORDER BY p.created_at DESC
+  `).all(req.session.user.id);
+  res.render('instructor_students', { students });
+});
+
+app.get('/dashboard/instructor/homework', requireAuth, requireRole('instructor'), (req, res) => {
+  const submissions = db.prepare(`
+    SELECT hs.*, u.name student_name, ht.title task_title
+    FROM homework_submissions hs
+    JOIN users u ON u.id = hs.student_id
+    JOIN homework_tasks ht ON ht.id = hs.homework_task_id
+    JOIN lessons l ON l.id = ht.lesson_id
+    JOIN modules m ON m.id = l.module_id
+    JOIN courses c ON c.id = m.course_id
+    WHERE c.instructor_id = ?
+    ORDER BY hs.created_at DESC
+  `).all(req.session.user.id);
+  res.render('instructor_homework', { submissions });
+});
+
+app.get('/dashboard/instructor/analytics', requireAuth, requireRole('instructor'), (req, res) => {
+  const analytics = db.prepare(`
+    SELECT c.title,
+      COUNT(p.id) sales,
+      COALESCE(SUM(p.amount_cents),0) revenue
+    FROM courses c
+    LEFT JOIN purchases p ON p.course_id = c.id AND p.payment_status='paid'
+    WHERE c.instructor_id = ?
+    GROUP BY c.id
+    ORDER BY revenue DESC
+  `).all(req.session.user.id);
+  res.render('instructor_analytics', { analytics });
+});
+
+app.get('/dashboard/instructor/finances', requireAuth, requireRole('instructor'), (req, res) => {
+  const payouts = db.prepare(`SELECT p.*, c.title FROM purchases p JOIN courses c ON c.id = p.course_id WHERE c.instructor_id = ? AND p.payment_status='paid' ORDER BY p.created_at DESC`).all(req.session.user.id);
+  res.render('instructor_finances', { payouts });
+});
+
+app.get('/dashboard/instructor/webinars', requireAuth, requireRole('instructor'), (req, res) => res.render('instructor_webinars'));
+
+app.get('/messages', requireAuth, (req, res) => res.render('messages'));
+app.get('/notifications', requireAuth, (req, res) => res.render('notifications'));
+
+app.get('/about', (req, res) => res.render('static_page', { title: 'О платформе', content: 'BeautyScale — платформа обучения бьюти-мастеров.' }));
+app.get('/faq', (req, res) => res.render('static_page', { title: 'FAQ', content: 'Частые вопросы по оплате, доступу и возвратам.' }));
+app.get('/blog', (req, res) => res.render('blog'));
+app.get('/privacy', (req, res) => res.render('static_page', { title: 'Политика конфиденциальности', content: 'Мы защищаем ваши персональные данные.' }));
+app.get('/terms', (req, res) => res.render('static_page', { title: 'Пользовательское соглашение', content: 'Условия использования платформы.' }));
+
+app.get('/admin/moderation', requireAuth, requireRole('admin'), (req, res) => res.render('admin_moderation'));
+app.get('/admin/users', requireAuth, requireRole('admin'), (req, res) => res.render('admin_users', { users: db.prepare('SELECT id,name,email,role,created_at FROM users ORDER BY created_at DESC').all() }));
+app.get('/admin/finances', requireAuth, requireRole('admin'), (req, res) => res.render('admin_finances', { rows: db.prepare('SELECT * FROM purchases ORDER BY created_at DESC').all() }));
+app.get('/admin/complaints', requireAuth, requireRole('admin'), (req, res) => res.render('admin_complaints'));
+app.get('/admin/analytics', requireAuth, requireRole('admin'), (req, res) => res.render('admin_analytics'));
 
 app.listen(PORT, () => console.log(`BeautyScale running on http://localhost:${PORT}`));

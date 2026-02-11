@@ -1,0 +1,3 @@
+<%- include('partials/header', { title: 'Сертификаты' }) %>
+<section class="section"><h1>Сертификаты</h1><% certs.forEach(c=>{ %><article class="card"><p><strong><%= c.title %></strong> · Код: <%= c.cert_code %></p></article><% }) %></section>
+<%- include('partials/footer') %>

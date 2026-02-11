@@ -1,0 +1,3 @@
+<%- include('partials/header', { title: 'Проверка домашек' }) %>
+<section class="section"><h1>Проверка домашек</h1><% submissions.forEach(s=>{ %><article class="card"><p><strong><%= s.student_name %></strong> · <%= s.task_title %></p><p><%= s.answer_text %></p><form method="post" action="/submissions/<%= s.id %>/feedback" class="stack"><textarea name="feedback_text" placeholder="Фидбек"><%= s.feedback_text %></textarea><input type="number" name="grade" min="1" max="10" value="<%= s.grade %>" /><button class="btn small">Сохранить</button></form></article><% }) %></section>
+<%- include('partials/footer') %>

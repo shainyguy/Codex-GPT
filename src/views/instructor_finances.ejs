@@ -1,0 +1,3 @@
+<%- include('partials/header', { title: 'Финансы' }) %>
+<section class="section"><h1>Финансы</h1><% payouts.forEach(p=>{ %><article class="card"><p><strong><%= p.title %></strong> · доход мастера: <%= formatMoney(p.instructor_earnings_cents) %> · платформа: <%= formatMoney(p.platform_fee_cents) %></p></article><% }) %></section>
+<%- include('partials/footer') %>

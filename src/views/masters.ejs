@@ -1,0 +1,16 @@
+<%- include('partials/header', { title: 'Мастера' }) %>
+<section class="section">
+  <h1>Мастера</h1>
+  <div class="grid">
+    <% masters.forEach(m => { %>
+      <article class="card">
+        <h3><%= m.name %></h3>
+        <p><%= m.specialization || 'Бьюти-специалист' %> · <%= m.experience_years || 0 %> лет</p>
+        <p>★ <%= Number(m.rating || 0).toFixed(1) %></p>
+        <p><%= (m.portfolio_text || 'Портфолио будет здесь').slice(0, 100) %></p>
+        <a class="btn small" href="/instructors/<%= m.id %>">Открыть профиль</a>
+      </article>
+    <% }) %>
+  </div>
+</section>
+<%- include('partials/footer') %>
