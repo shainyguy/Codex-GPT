@@ -1,0 +1,15 @@
+<%- include('partials/header', { title: 'Новый курс' }) %>
+<section class="section narrow glass">
+  <h1>Создание курса</h1>
+  <% if (error) { %><p class="error"><%= error %></p><% } %>
+  <form method="post" action="/courses" class="stack">
+    <input name="title" placeholder="Название" required />
+    <input name="category" placeholder="Категория (макияж, ногти...)" required />
+    <textarea name="description" placeholder="Описание" rows="5" required></textarea>
+    <input name="level" placeholder="Уровень" required />
+    <input type="number" min="1" step="0.01" name="price" placeholder="Цена (RUB)" required />
+    <input name="thumbnail_url" placeholder="Ссылка на обложку" />
+    <button class="btn">Опубликовать</button>
+  </form>
+</section>
+<%- include('partials/footer') %>

@@ -1,0 +1,23 @@
+<%- include('partials/header', { title: 'Кабинет преподавателя' }) %>
+<section class="section">
+  <h1>Кабинет преподавателя</h1>
+  <div class="stats">
+    <div class="stat glass"><span>Оборот</span><strong><%= formatMoney(stats.gross) %></strong></div>
+    <div class="stat glass"><span>Комиссия платформы</span><strong><%= formatMoney(stats.platform) %></strong></div>
+    <div class="stat glass"><span>К выплате вам</span><strong><%= formatMoney(stats.payout) %></strong></div>
+  </div>
+  <a href="/courses/new" class="btn">+ Новый курс</a>
+  <div class="grid">
+    <% courses.forEach(course => { %>
+      <article class="card glass">
+        <h3><%= course.title %></h3>
+        <p><%= formatMoney(course.price_cents) %> · <%= course.category %></p>
+        <div class="row between">
+          <a class="btn small" href="/courses/<%= course.id %>">Открыть</a>
+          <form method="post" action="/courses/<%= course.id %>?_method=DELETE"><button class="btn small ghost">Удалить</button></form>
+        </div>
+      </article>
+    <% }) %>
+  </div>
+</section>
+<%- include('partials/footer') %>

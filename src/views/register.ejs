@@ -1,0 +1,16 @@
+<%- include('partials/header', { title: 'Регистрация' }) %>
+<section class="section narrow glass">
+  <h1>Создать аккаунт</h1>
+  <% if (error) { %><p class="error"><%= error %></p><% } %>
+  <form method="post" action="/register" class="stack">
+    <input type="text" name="name" placeholder="Имя" required />
+    <input type="email" name="email" placeholder="Email" required />
+    <input type="password" name="password" placeholder="Пароль" required />
+    <select name="role" required>
+      <option value="student">Ученик</option>
+      <option value="instructor">Преподаватель</option>
+    </select>
+    <button class="btn">Продолжить</button>
+  </form>
+</section>
+<%- include('partials/footer') %>

@@ -1,0 +1,26 @@
+<%- include('partials/header', { title: course.title }) %>
+<section class="section">
+  <div class="course-head glass">
+    <h1><%= course.title %></h1>
+    <p><%= course.description %></p>
+    <p class="muted">Автор: <%= course.instructor_name %> · <%= course.category %> · <%= course.level %></p>
+    <p><strong><%= formatMoney(course.price_cents) %></strong></p>
+    <p class="muted">Комиссия платформы: <%= formatMoney(platformFeeCents) %>, автор получает: <%= formatMoney(instructorEarningsCents) %></p>
+    <% if (currentUser && currentUser.role === 'student' && !purchased) { %>
+      <form method="post" action="/courses/<%= course.id %>/purchase"><button class="btn">Купить курс</button></form>
+    <% } else if (purchased) { %>
+      <p class="chip">Курс куплен</p>
+    <% } %>
+  </div>
+
+  <h2>Программа</h2>
+  <div class="glass pad">
+    <% lessons.forEach(lesson => { %>
+      <article>
+        <h3><%= lesson.position %>. <%= lesson.title %></h3>
+        <p><%= lesson.content %></p>
+      </article>
+    <% }) %>
+  </div>
+</section>
+<%- include('partials/footer') %>
