@@ -1,4 +1,5 @@
 require('dotenv').config();
+const fs = require('fs');
 const path = require('path');
 const express = require('express');
 const session = require('express-session');
@@ -11,7 +12,11 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const PLATFORM_COMMISSION_RATE = Number(process.env.PLATFORM_COMMISSION_RATE || 0.2);
 
-const db = new Database(path.join(__dirname, 'data', 'app.db'));
+const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, 'data');
+fs.mkdirSync(DATA_DIR, { recursive: true });
+
+const dbPath = path.join(DATA_DIR, 'app.db');
+const db = new Database(dbPath);
 db.pragma('journal_mode = WAL');
 
 function migrate() {
@@ -84,7 +89,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(methodOverride('_method'));
 app.use(
   session({
-    store: new SQLiteStore({ db: 'sessions.db', dir: path.join(__dirname, 'data') }),
+    store: new SQLiteStore({ db: 'sessions.db', dir: DATA_DIR }),
     secret: process.env.SESSION_SECRET || 'dev-secret',
     resave: false,
     saveUninitialized: false,

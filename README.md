@@ -26,6 +26,7 @@ SESSION_SECRET=super-secret
 PLATFORM_COMMISSION_RATE=0.2
 ADMIN_EMAIL=admin@beauty.local
 ADMIN_PASSWORD=admin123
+DATA_DIR=./src/data
 ```
 
 - `PLATFORM_COMMISSION_RATE=0.2` = 20% платформе, 80% преподавателю.
@@ -35,7 +36,8 @@ ADMIN_PASSWORD=admin123
 1. Создайте проект в Railway и подключите репозиторий.
 2. Railway автоматически запустит `npm install` и `npm start`.
 3. Добавьте переменные окружения из секции выше.
-4. Для сохранения SQLite-базы между деплоями подключите Volume и укажите persistent storage для папки `src/data`.
+4. Для сохранения SQLite-базы между деплоями подключите Volume.
+5. Укажите `DATA_DIR` в переменных Railway на путь volume, например: `/data`.
 
 ## Дефолтный админ
 
