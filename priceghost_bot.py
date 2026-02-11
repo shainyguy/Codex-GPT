@@ -11,7 +11,7 @@ import asyncio
 # ---------------------
 # Настройки
 # ---------------------
-API_TOKEN = "TELEGRAM_BOT_TOKEN"
+API_TOKEN = "5191951105:AAESbK_-oU4DNWn195_w9uYy6Y_XUSmQiaI"
 GIGACHAT_API_KEY = "YOUR_GIGACHAT_API_KEY"
 
 BOT = Bot(token=API_TOKEN)
