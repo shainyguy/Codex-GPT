@@ -1,0 +1,94 @@
+<%- include('partials/header', { title: 'BeautyScale — Научись у лучших мастеров' }) %>
+<section class="hero">
+  <h1>Научись у лучших мастеров</h1>
+  <p>Онлайн-курсы по макияжу, ногтям, волосам, бровям и уходу за кожей.</p>
+  <form class="filters" method="get" action="/">
+    <input name="q" value="<%= q.q || '' %>" placeholder="Чему хотите научиться?" />
+    <select name="category"><option value="">Категория</option><% categoryOptions.forEach(c => { %><option <%= q.category===c?'selected':'' %>><%= c %></option><% }) %></select>
+    <select name="level"><option value="">Уровень</option><% levelOptions.forEach(l => { %><option <%= q.level===l?'selected':'' %>><%= l %></option><% }) %></select>
+    <button class="btn">Найти</button>
+  </form>
+  <p>Популярные: <a href="/?category=Макияж">макияж</a>, <a href="/?category=Ногти">ногти</a>, <a href="/?category=Брови">брови</a></p>
+</section>
+
+<section class="section">
+  <h2>📂 Категории</h2>
+  <div class="grid">
+    <a class="card" href="/?category=Макияж">💄 Макияж</a>
+    <a class="card" href="/?category=Ногти">💅 Ногти</a>
+    <a class="card" href="/?category=Волосы">💇 Волосы</a>
+    <a class="card" href="/?category=Брови">👁️ Брови</a>
+    <a class="card" href="/?category=Кожа">🧴 Уход</a>
+  </div>
+</section>
+
+<section class="section">
+  <h2>🔥 Популярные курсы</h2>
+  <div class="grid">
+    <% popularCourses.forEach(course => { %>
+      <article class="card">
+        <div class="cover" style="background-image:url('<%= course.thumbnail_url || 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?q=80&w=1200&auto=format&fit=crop' %>')"></div>
+        <h3><%= course.title %></h3>
+        <p>⭐ <%= Number(course.rating || 0).toFixed(1) %></p>
+        <p><strong><%= formatMoney(course.price_cents) %></strong></p>
+        <a class="btn small" href="/courses/<%= course.id %>">Открыть</a>
+      </article>
+    <% }) %>
+  </div>
+</section>
+
+<section class="section">
+  <h2>🏆 Топ мастера</h2>
+  <div class="grid">
+    <% topMasters.forEach(master => { %>
+      <article class="card">
+        <h3><%= master.name %></h3>
+        <p><%= master.specialization || 'Бьюти-мастер' %></p>
+        <p>★ <%= Number(master.rating || 0).toFixed(1) %></p>
+        <a class="btn small ghost" href="/instructors/<%= master.id %>">Профиль</a>
+      </article>
+    <% }) %>
+  </div>
+</section>
+
+<section class="section">
+  <h2>📸 Результаты учеников (до/после)</h2>
+  <div class="grid">
+    <% beforeAfter.forEach(item => { %>
+      <article class="card">
+        <div class="row">
+          <img src="<%= item.before_url || 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=600&auto=format&fit=crop' %>" width="48%" style="border-radius:10px" />
+          <img src="<%= item.after_url || 'https://images.unsplash.com/photo-1519415943484-9fa1873496d4?q=80&w=600&auto=format&fit=crop' %>" width="48%" style="border-radius:10px" />
+        </div>
+        <p><%= item.caption || 'До и после обучения' %></p>
+      </article>
+    <% }) %>
+  </div>
+</section>
+
+<section class="section">
+  <h2>💬 Отзывы учеников</h2>
+  <div class="grid">
+    <% testimonials.forEach(t => { %><article class="card"><p>"<%= t.comment || 'Отличный курс!' %>"</p><p><strong><%= t.student_name %></strong> · ⭐ <%= t.rating %></p></article><% }) %>
+  </div>
+</section>
+
+<section class="section card">
+  <h2>Вы мастер? Начните продавать курсы</h2>
+  <a href="/register" class="btn">Стать автором →</a>
+</section>
+
+<section class="section">
+  <h2>📚 Результаты поиска / каталог</h2>
+  <div class="grid">
+    <% courses.forEach(course => { %>
+      <article class="card">
+        <h3><%= course.title %></h3>
+        <p><%= course.category %> · <%= course.level %> · ⭐ <%= Number(course.avg_rating || 0).toFixed(1) %></p>
+        <p><%= course.description.slice(0, 120) %>...</p>
+        <div class="row between"><strong><%= formatMoney(course.price_cents) %></strong><a class="btn small" href="/courses/<%= course.id %>">Подробнее</a></div>
+      </article>
+    <% }) %>
+  </div>
+</section>
+<%- include('partials/footer') %>

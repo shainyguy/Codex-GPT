@@ -1,0 +1,26 @@
+<%- include('partials/header', { title: 'Кабинет ученика' }) %>
+<section class="section">
+  <h1>Кабинет ученика</h1>
+  <div class="row">
+    <a class="btn small" href="/dashboard/student/progress">Прогресс</a>
+    <a class="btn small" href="/dashboard/student/certificates">Сертификаты</a>
+    <a class="btn small" href="/dashboard/student/favorites">Избранное</a>
+    <a class="btn small" href="/dashboard/student/purchases">История покупок</a>
+    <a class="btn small" href="/dashboard/student/settings">Настройки</a>
+  </div>
+  <h2 class="section">Мои курсы</h2>
+  <div class="grid">
+    <% myCourses.forEach(course => { %>
+      <article class="card">
+        <h3><%= course.title %></h3>
+        <p>Автор: <%= course.instructor_name %></p>
+        <a href="/courses/<%= course.id %>" class="btn small">Открыть</a>
+      </article>
+    <% }) %>
+  </div>
+</section>
+<section class="section card">
+  <h2>Домашние задания</h2>
+  <% submissions.forEach(s => { %><p><strong><%= s.task_title %></strong> · оценка: <%= s.grade || '—' %> · фидбек: <%= s.feedback_text || 'ожидается' %></p><% }) %>
+</section>
+<%- include('partials/footer') %>

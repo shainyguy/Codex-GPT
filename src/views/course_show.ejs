@@ -1,0 +1,76 @@
+<%- include('partials/header', { title: course.title }) %>
+<section class="section">
+  <p><a href="/">Каталог</a> > <%= course.category %> > <%= course.title %></p>
+  <div class="grid" style="grid-template-columns:2fr 1fr;">
+    <article class="card">
+      <h1><%= course.title %></h1>
+      <div class="cover" style="height:260px;background-image:url('<%= course.thumbnail_url || 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=1400&auto=format&fit=crop' %>')"></div>
+      <p>★★★★★ <%= Number((reviews.reduce((a,b)=>a+b.rating,0)/(reviews.length||1))).toFixed(1) %> (<%= reviews.length %> отзывов)</p>
+      <p>👩‍🎓 <%= (course.sales_count || 0) %> учеников · 📅 обновлён недавно</p>
+      <h3>Описание</h3>
+      <p><%= course.description %></p>
+      <h3>Чему научитесь</h3>
+      <ul class="list-clean">
+        <li>✅ Подготовка клиента и материалов</li><li>✅ Работа с техниками и трендами</li><li>✅ Практика на реальных кейсах</li><li>✅ Домашки с обратной связью</li>
+      </ul>
+    </article>
+    <aside class="card">
+      <h2><%= formatMoney(course.price_cents) %></h2>
+      <% if (currentUser && currentUser.role === 'student' && (!purchase || purchase.payment_status !== 'paid')) { %>
+        <a class="btn" href="/courses/<%= course.id %>/checkout">Купить курс</a><button class="btn ghost" type="button">В рассрочку</button>
+      <% } else if (purchase && purchase.payment_status === 'paid') { %>
+        <p class="chip">Курс оплачен</p>
+      <% } %>
+      <p>✅ <%= modules.reduce((a,m)=>a+m.lessons.length,0) %> уроков</p>
+      <p>✅ <%= course.duration_hours %> часов</p>
+      <p>✅ Сертификат</p>
+      <p>✅ Домашки</p>
+      <p>✅ Доступ навсегда</p>
+    </aside>
+  </div>
+</section>
+
+<section class="section card">
+  <h2>Программа курса</h2>
+  <% modules.forEach((mod,idx) => { %>
+    <p><strong>📁 Модуль <%= idx+1 %>: <%= mod.title %> (<%= mod.lessons.length %> урока)</strong></p>
+    <ul class="list-clean">
+      <% mod.lessons.forEach((lesson,i)=> { %>
+        <li><%= idx+1 %>.<%= i+1 %> <%= lesson.title %> <%= purchase && purchase.payment_status==='paid' ? '🔓' : '🔒' %> <%= lesson.duration_min %>:00 <% if (purchase && purchase.payment_status==='paid' && currentUser && currentUser.role==='student') { %><a href="/lessons/<%= lesson.id %>/watch">смотреть</a><% } %></li>
+      <% }) %>
+    </ul>
+  <% }) %>
+</section>
+
+<section class="section card">
+  <h2>Об авторе</h2>
+  <p>👩 <a href="/instructors/<%= course.instructor_id %>"><%= course.instructor_name %></a> · рейтинг <%= Number(course.instructor_rating || 0).toFixed(1) %></p>
+</section>
+
+<section class="section card">
+  <h2>Результаты учеников (до/после)</h2>
+  <form method="post" action="/courses/<%= course.id %>/results" class="grid">
+    <input name="before_url" placeholder="Ссылка на фото ДО" />
+    <input name="after_url" placeholder="Ссылка на фото ПОСЛЕ" />
+    <input name="caption" placeholder="Комментарий" />
+    <button class="btn">Опубликовать результат</button>
+  </form>
+</section>
+
+<section class="section card">
+  <h2>Отзывы</h2>
+  <% reviews.forEach(r => { %><p><strong><%= r.student_name %></strong> ★<%= r.rating %> — <%= r.comment %></p><% }) %>
+  <% if (currentUser && currentUser.role==='student' && purchase && purchase.payment_status==='paid') { %>
+    <form method="post" action="/courses/<%= course.id %>/review" class="stack">
+      <input name="rating" type="number" min="1" max="5" placeholder="Оценка" required />
+      <textarea name="comment" placeholder="Отзыв"></textarea>
+      <button class="btn small">Оставить отзыв</button>
+    </form>
+  <% } %>
+</section>
+
+<section class="section card">
+  <h2>Похожие курсы</h2>
+  <div class="row"><% similarCourses.forEach(c => { %><a class="btn ghost small" href="/courses/<%= c.id %>"><%= c.title %></a><% }) %></div>
+</section>
+<%- include('partials/footer') %>

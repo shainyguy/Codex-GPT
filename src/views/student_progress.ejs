@@ -1,0 +1,3 @@
+<%- include('partials/header', { title: 'Прогресс' }) %>
+<section class="section"><h1>Прогресс</h1><div class="grid"><% progress.forEach(p=>{ %><article class="card"><h3><%= p.title %></h3><p><%= p.completed_items %> / <%= p.total_lessons %> шагов выполнено</p></article><% }) %></div></section>
+<%- include('partials/footer') %>

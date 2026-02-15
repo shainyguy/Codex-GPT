@@ -1,0 +1,16 @@
+<%- include('partials/header', { title: 'Профиль мастера' }) %>
+<section class="section card">
+  <h1><%= instructor.name %></h1>
+  <p>Специализация: <%= instructor.specialization || 'не указана' %> · опыт: <%= instructor.experience_years %> лет · рейтинг: <%= Number(instructor.rating||0).toFixed(1) %></p>
+  <p>Сертификаты: <%= instructor.certificates || 'нет' %></p>
+  <p>Портфолио: <%= instructor.portfolio_text || 'нет описания' %></p>
+  <p>
+    <% if (instructor.social_instagram) { %><a href="<%= instructor.social_instagram %>" target="_blank">Instagram</a><% } %>
+    <% if (instructor.social_telegram) { %> · <a href="<%= instructor.social_telegram %>" target="_blank">Telegram</a><% } %>
+  </p>
+</section>
+<section class="section grid">
+  <article class="card"><h3>Курсы мастера</h3><ul class="list-clean"><% courses.forEach(c=>{ %><li><a href="/courses/<%= c.id %>"><%= c.title %></a></li><% }) %></ul></article>
+  <article class="card"><h3>Отзывы учеников</h3><% reviews.forEach(r=>{ %><p><strong><%= r.student_name %></strong>: <%= r.rating %>/5 — <%= r.comment %></p><% }) %></article>
+</section>
+<%- include('partials/footer') %>

@@ -1,0 +1,1 @@
+<%- include('partials/header', { title: 'Финансы' }) %><section class="section"><h1>Финансы</h1><% rows.forEach(r=>{ %><article class="card"><%= r.id %> · <%= formatMoney(r.amount_cents) %> · <%= r.payment_status %></article><% }) %></section><%- include('partials/footer') %>

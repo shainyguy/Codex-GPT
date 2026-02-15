@@ -1,0 +1,28 @@
+<%- include('partials/header', { title: 'Кабинет мастера' }) %>
+<section class="section">
+  <h1>Кабинет мастера</h1>
+  <div class="stats">
+    <div class="stat"><span>Оборот</span><strong><%= formatMoney(stats.gross) %></strong></div>
+    <div class="stat"><span>Комиссия платформы</span><strong><%= formatMoney(stats.platform) %></strong></div>
+    <div class="stat"><span>Выплаты мастеру</span><strong><%= formatMoney(stats.payout) %></strong></div>
+  </div>
+  <div class="row">
+    <a class="btn" href="/courses/new">Создать курс</a>
+    <a class="btn ghost" href="/dashboard/instructor/students">Ученики</a>
+    <a class="btn ghost" href="/dashboard/instructor/homework">Проверка домашек</a>
+    <a class="btn ghost" href="/dashboard/instructor/analytics">Аналитика</a>
+    <a class="btn ghost" href="/dashboard/instructor/finances">Финансы</a>
+    <a class="btn ghost" href="/dashboard/instructor/webinars">Вебинары</a>
+    <a class="btn ghost" href="/instructor/profile">Профиль</a>
+  </div>
+  <section class="section grid">
+    <% courses.forEach(course => { %>
+      <article class="card">
+        <h3><%= course.title %></h3>
+        <p><%= course.category %> · <%= formatMoney(course.price_cents) %></p>
+        <div class="row"><a class="btn small" href="/courses/<%= course.id %>/builder">Редактирование</a><a class="btn small ghost" href="/courses/<%= course.id %>">Страница курса</a></div>
+      </article>
+    <% }) %>
+  </section>
+</section>
+<%- include('partials/footer') %>

@@ -1,0 +1,80 @@
+<%- include('partials/header', { title: 'Конструктор курса' }) %>
+<section class="section">
+  <div class="row between"><h1>СОЗДАНИЕ КУРСА</h1><p>Шаг 2 из 5</p></div>
+  <p><strong>● Основное ● Программа ○ Цена ○ Настройки</strong></p>
+  <h2><%= course.title %></h2>
+  <p>Добавляйте модули, уроки, материалы PDF/текст и домашние задания. Порядок уроков можно менять перетаскиванием (drag & drop).</p>
+
+  <div class="grid">
+    <article class="card">
+      <h3>Новый модуль</h3>
+      <form method="post" action="/courses/<%= course.id %>/modules" class="stack">
+        <input name="title" placeholder="Название модуля" required />
+        <button class="btn">Добавить модуль</button>
+      </form>
+    </article>
+
+    <article class="card">
+      <h3>Материал (PDF / текст)</h3>
+      <form method="post" action="/courses/<%= course.id %>/materials" class="stack">
+        <input name="title" placeholder="Название" required />
+        <select name="type"><option value="pdf">PDF</option><option value="text">Text</option></select>
+        <input name="content_url" placeholder="Ссылка на PDF" />
+        <textarea name="content_text" placeholder="Текст материала"></textarea>
+        <button class="btn">Сохранить материал</button>
+      </form>
+    </article>
+  </div>
+
+  <% modules.forEach(mod => { %>
+    <article class="card section">
+      <h3><%= mod.title %></h3>
+      <form method="post" action="/modules/<%= mod.id %>/lessons" class="stack">
+        <input name="title" placeholder="Новый урок" required />
+        <input name="video_url" placeholder="Ссылка на видео" />
+        <textarea name="text_content" placeholder="Текст урока"></textarea>
+        <input type="number" name="duration_min" min="1" placeholder="Длительность (мин)" />
+        <button class="btn">Добавить урок</button>
+      </form>
+
+      <form method="post" action="/lessons/reorder" class="section" onsubmit="document.getElementById('lesson_ids_<%= mod.id %>').value = Array.from(document.querySelectorAll('#list_<%= mod.id %> .drag-item')).map(el => el.dataset.id).join(',')">
+        <input type="hidden" id="lesson_ids_<%= mod.id %>" name="lesson_ids" />
+        <div id="list_<%= mod.id %>">
+          <% mod.lessons.forEach(lesson => { %>
+            <div class="drag-item" draggable="true" data-id="<%= lesson.id %>">
+              <strong><%= lesson.position %>. <%= lesson.title %></strong> · <%= lesson.duration_min %> мин
+              <div><a class="btn small ghost" href="/lessons/<%= lesson.id %>/watch">Проверить как ученик</a></div>
+            </div>
+          <% }) %>
+        </div>
+        <button class="btn small">Сохранить порядок</button>
+      </form>
+    </article>
+  <% }) %>
+
+  <article class="card section">
+    <h3>Домашние задания</h3>
+    <form method="post" action="/courses/<%= course.id %>/homework" class="stack">
+      <select name="lesson_id"><% modules.forEach(m=>m.lessons.forEach(l=>{ %><option value="<%= l.id %>"><%= m.title %> → <%= l.title %></option><% })) %></select>
+      <input name="title" placeholder="Название задания" required />
+      <textarea name="instructions" placeholder="Инструкция" required></textarea>
+      <button class="btn">Добавить домашку</button>
+    </form>
+    <ul class="list-clean">
+      <% homeworkTasks.forEach(t => { %><li><strong><%= t.title %></strong> — урок: <%= t.lesson_title %></li><% }) %>
+    </ul>
+  </article>
+</section>
+<script>
+  document.querySelectorAll('.drag-item').forEach(el => {
+    el.addEventListener('dragstart', e => e.dataTransfer.setData('text/plain', el.dataset.id));
+    el.addEventListener('dragover', e => e.preventDefault());
+    el.addEventListener('drop', e => {
+      e.preventDefault();
+      const fromId = e.dataTransfer.getData('text/plain');
+      const source = document.querySelector(`.drag-item[data-id="${fromId}"]`);
+      if (source && source !== el) el.parentNode.insertBefore(source, el);
+    });
+  });
+</script>
+<%- include('partials/footer') %>

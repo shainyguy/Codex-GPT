@@ -1,0 +1,15 @@
+<%- include('partials/header', { title: 'Профиль мастера' }) %>
+<section class="section narrow card">
+  <h1>Портфолио мастера</h1>
+  <% if (saved) { %><p class="chip">Сохранено</p><% } %>
+  <form method="post" action="/instructor/profile" class="stack">
+    <input name="specialization" value="<%= profile.specialization %>" placeholder="Специализация" />
+    <input type="number" name="experience_years" value="<%= profile.experience_years %>" placeholder="Опыт (лет)" />
+    <textarea name="certificates" placeholder="Сертификаты"><%= profile.certificates %></textarea>
+    <textarea name="portfolio_text" placeholder="Описание портфолио / до-после"><%= profile.portfolio_text %></textarea>
+    <input name="social_instagram" value="<%= profile.social_instagram %>" placeholder="Instagram URL" />
+    <input name="social_telegram" value="<%= profile.social_telegram %>" placeholder="Telegram URL" />
+    <button class="btn">Сохранить профиль</button>
+  </form>
+</section>
+<%- include('partials/footer') %>

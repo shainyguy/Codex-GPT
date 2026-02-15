@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title || 'BeautyScale' %></title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+<header class="nav">
+  <a href="/" class="logo">Beauty<span>Scale</span></a>
+  <nav>
+    <a href="/">Каталог</a>
+    <a href="/masters">Мастера</a>
+    <a href="/blog">Блог</a>
+    <% if (!currentUser) { %>
+      <a href="/login">Войти</a>
+      <a href="/register" class="btn small">Регистрация</a>
+    <% } else { %>
+      <a href="/dashboard">Кабинет</a>
+      <a href="/notifications">🔔</a>
+      <a href="/messages">💬</a>
+      <form method="post" action="/logout" class="inline"><button class="btn small ghost">Выйти</button></form>
+    <% } %>
+  </nav>
+</header>
+<main>

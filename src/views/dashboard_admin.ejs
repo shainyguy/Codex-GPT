@@ -1,0 +1,17 @@
+<%- include('partials/header', { title: 'Админ-панель' }) %>
+<section class="section">
+  <h1>Админ-панель</h1>
+  <div class="stats">
+    <div class="stat"><span>Оборот</span><strong><%= formatMoney(stats.gross) %></strong></div>
+    <div class="stat"><span>Доход платформы</span><strong><%= formatMoney(stats.commission) %></strong></div>
+    <div class="stat"><span>Продажи</span><strong><%= stats.sales %></strong></div>
+  </div>
+  <div class="row">
+    <a class="btn" href="/admin/moderation">Модерация курсов</a>
+    <a class="btn ghost" href="/admin/users">Пользователи</a>
+    <a class="btn ghost" href="/admin/finances">Финансы</a>
+    <a class="btn ghost" href="/admin/complaints">Жалобы</a>
+    <a class="btn ghost" href="/admin/analytics">Аналитика</a>
+  </div>
+</section>
+<%- include('partials/footer') %>
