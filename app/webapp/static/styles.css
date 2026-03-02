@@ -1,0 +1,5 @@
+body { font-family: Inter, Arial, sans-serif; background:#0b1020; color:#f1f5f9; margin:0; }
+main { max-width: 800px; margin: 0 auto; padding: 24px; }
+section { background:#172036; border-radius:12px; padding:16px; margin-bottom:16px; }
+input, textarea, button { width:100%; margin-top:8px; padding:10px; border-radius:8px; border:1px solid #334155; }
+button { background:#2563eb; color:white; font-weight:700; border:none; }
