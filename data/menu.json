@@ -1,0 +1,217 @@
+{
+  "dishOfDay": {
+    "name": "Садж баранина",
+    "description": "Большая порция на компанию, сегодня со скидкой 15%",
+    "oldPrice": 900,
+    "price": 765,
+    "weight": "1 кг",
+    "calories": 520,
+    "allergens": ["Без глютена"],
+    "prepTime": "25 мин",
+    "image": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?q=80&w=1400&auto=format&fit=crop"
+  },
+  "comboSets": [
+    {
+      "name": "Комбо Семейное",
+      "description": "Шашлык ассорти, овощи, соусы, лаваш",
+      "price": 2990
+    },
+    {
+      "name": "Комбо Праздник",
+      "description": "Садж + 2 салата + напитки",
+      "price": 3990
+    }
+  ],
+  "categories": [
+    {
+      "slug": "mangal",
+      "title": "Блюда с мангала",
+      "image": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?q=80&w=1200&auto=format&fit=crop",
+      "items": [
+        {"name":"Бейденже карфяк","weight":"200гр","price":800,"calories":430,"allergens":["Без лактозы"],"prepTime":"20 мин"},
+        {"name":"Бейденже чебреке","weight":"200гр","price":800,"calories":430,"allergens":[],"prepTime":"20 мин"},
+        {"name":"Курдюмба чебреке","weight":"200гр","price":700,"calories":460,"allergens":[],"prepTime":"20 мин"},
+        {"name":"Курдюмба чебреке с кабачками","weight":"200гр","price":650,"calories":410,"allergens":[],"prepTime":"18 мин"},
+        {"name":"Лаваш по узбекски","weight":"200гр","price":650,"calories":350,"allergens":["Глютен"],"prepTime":"12 мин"},
+        {"name":"Говяжий гостри с сыром","weight":"250гр","price":800,"calories":520,"allergens":["Лактоза"],"prepTime":"22 мин"},
+        {"name":"Говяжий карфяк с сыром","weight":"200гр","price":800,"calories":500,"allergens":["Лактоза"],"prepTime":"22 мин"},
+        {"name":"Говяжий чебреке с острым соусом","weight":"200гр","price":800,"calories":460,"allergens":[],"prepTime":"20 мин"},
+        {"name":"Свинина чебреке","weight":"200гр","price":600,"calories":470,"allergens":[],"prepTime":"18 мин"},
+        {"name":"Свинина карфяк","weight":"200гр","price":600,"calories":470,"allergens":[],"prepTime":"18 мин"},
+        {"name":"Куриное карфяк","weight":"200гр","price":500,"calories":360,"allergens":[],"prepTime":"16 мин"},
+        {"name":"Куриное чебреке","weight":"200гр","price":500,"calories":360,"allergens":[],"prepTime":"16 мин"},
+        {"name":"Куриное кебаб","weight":"200гр","price":500,"calories":380,"allergens":[],"prepTime":"16 мин"},
+        {"name":"Шашлык на кебаб-шеле","weight":"200гр","price":600,"calories":420,"allergens":[],"prepTime":"20 мин"},
+        {"name":"Шашлык на курице","weight":"200гр","price":600,"calories":360,"allergens":[],"prepTime":"18 мин"},
+        {"name":"Шашлык из утиной грудки","weight":"200гр","price":600,"calories":390,"allergens":[],"prepTime":"20 мин"},
+        {"name":"Шашлык из утки","weight":"200гр","price":600,"calories":400,"allergens":[],"prepTime":"20 мин"}
+      ]
+    },
+    {
+      "slug":"bones",
+      "title":"Шашлык на костях",
+      "image":"https://images.unsplash.com/photo-1608039790184-2fe7cb0b84f7?q=80&w=1200&auto=format&fit=crop",
+      "items":[
+        {"name":"Бейденже","weight":"1кг","price":900,"calories":680,"allergens":[],"prepTime":"35 мин"},
+        {"name":"Дана из бижлиска","weight":"1кг","price":900,"calories":640,"allergens":[],"prepTime":"35 мин"},
+        {"name":"Бейденже из баранина","weight":"1кг","price":900,"calories":670,"allergens":[],"prepTime":"35 мин"},
+        {"name":"Кусочки баранина и свинина","weight":"1кг","price":800,"calories":650,"allergens":[],"prepTime":"32 мин"},
+        {"name":"Кусочки баранина и говядина","weight":"1кг","price":800,"calories":640,"allergens":[],"prepTime":"32 мин"},
+        {"name":"Кусочки свинина и говядина","weight":"1кг","price":800,"calories":640,"allergens":[],"prepTime":"32 мин"},
+        {"name":"Кусочки свинина и индейка","weight":"1кг","price":700,"calories":620,"allergens":[],"prepTime":"30 мин"},
+        {"name":"Кусочки индейки и курицы","weight":"1кг","price":600,"calories":590,"allergens":[],"prepTime":"30 мин"},
+        {"name":"Курица на костях","weight":"1кг","price":4500,"calories":610,"allergens":[],"prepTime":"35 мин"},
+        {"name":"Бейденже на углях","weight":"200гр","price":450,"calories":350,"allergens":[],"prepTime":"18 мин"},
+        {"name":"Бейденже на угле","weight":"200гр","price":400,"calories":340,"allergens":[],"prepTime":"18 мин"},
+        {"name":"Дана на углях","weight":"200гр","price":400,"calories":330,"allergens":[],"prepTime":"18 мин"},
+        {"name":"Дана на угле","weight":"200гр","price":350,"calories":320,"allergens":[],"prepTime":"18 мин"}
+      ]
+    },
+    {"slug":"veg","title":"Овощи на мангала","image":"https://images.unsplash.com/photo-1607532941433-304659e8198a?q=80&w=1200&auto=format&fit=crop","items":[
+      {"name":"Капуста квашенная","weight":"200гр","price":250,"calories":120,"allergens":["Без глютена","Без лактозы"],"prepTime":"8 мин"},
+      {"name":"Баклажан","weight":"1шт","price":200,"calories":90,"allergens":["Без глютена","Без лактозы"],"prepTime":"10 мин"},
+      {"name":"Перец","weight":"1шт","price":150,"calories":70,"allergens":["Без глютена","Без лактозы"],"prepTime":"8 мин"},
+      {"name":"Помидор","weight":"1шт","price":150,"calories":60,"allergens":["Без глютена","Без лактозы"],"prepTime":"8 мин"},
+      {"name":"Грибы","weight":"200гр","price":300,"calories":120,"allergens":["Без глютена"],"prepTime":"10 мин"}
+    ]},
+    {"slug":"fish","title":"Рыба на мангала","image":"https://images.unsplash.com/photo-1559737558-2f5a35f4523b?q=80&w=1200&auto=format&fit=crop","items":[
+      {"name":"Филе судака","weight":"1шт","price":900,"calories":300,"allergens":["Рыба"],"prepTime":"22 мин"},
+      {"name":"Сомак","weight":"1шт","price":700,"calories":320,"allergens":["Рыба"],"prepTime":"22 мин"},
+      {"name":"Сом","weight":"1шт","price":700,"calories":320,"allergens":["Рыба"],"prepTime":"22 мин"},
+      {"name":"Окунь","weight":"1шт","price":700,"calories":280,"allergens":["Рыба"],"prepTime":"20 мин"},
+      {"name":"Карась","weight":"1шт","price":500,"calories":270,"allergens":["Рыба"],"prepTime":"20 мин"}
+    ]},
+    {"slug":"sadzh","title":"Садж на мангала","image":"https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1200&auto=format&fit=crop","items":[
+      {"name":"Садж баранина","weight":"1кг","price":900,"calories":620,"allergens":[],"prepTime":"25 мин"},
+      {"name":"Садж говядина","weight":"1кг","price":900,"calories":600,"allergens":[],"prepTime":"25 мин"},
+      {"name":"Садж свинина","weight":"1кг","price":800,"calories":640,"allergens":[],"prepTime":"25 мин"},
+      {"name":"Садж курица","weight":"1кг","price":700,"calories":540,"allergens":[],"prepTime":"22 мин"}
+    ]},
+    {"slug":"soups","title":"Супы","image":"https://images.unsplash.com/photo-1547592166-23ac45744acd?q=80&w=1200&auto=format&fit=crop","items":[
+      {"name":"Борщ","weight":"350гр","price":450,"calories":250,"allergens":[],"prepTime":"15 мин"},
+      {"name":"Щи","weight":"350гр","price":450,"calories":240,"allergens":[],"prepTime":"15 мин"},
+      {"name":"Хаш из курицы","weight":"350гр","price":400,"calories":260,"allergens":[],"prepTime":"15 мин"},
+      {"name":"Хаш из говядины","weight":"350гр","price":400,"calories":280,"allergens":[],"prepTime":"15 мин"},
+      {"name":"Лагман","weight":"350гр","price":550,"calories":390,"allergens":["Глютен"],"prepTime":"18 мин"}
+    ]},
+    {"slug":"hot","title":"Горячие блюда","image":"https://images.unsplash.com/photo-1604908176997-431638f5268b?q=80&w=1200&auto=format&fit=crop","items":[
+      {"name":"Бейденже из бижлиска","weight":"400гр","price":1000,"calories":700,"allergens":[],"prepTime":"22 мин"},
+      {"name":"Бейденже из баранина","weight":"400гр","price":650,"calories":640,"allergens":[],"prepTime":"22 мин"},
+      {"name":"Цыпленок табауль","weight":"300гр","price":650,"calories":550,"allergens":[],"prepTime":"20 мин"},
+      {"name":"Цыпленок табауль с рисом","weight":"300гр","price":650,"calories":590,"allergens":[],"prepTime":"20 мин"},
+      {"name":"Бейденже на углях","weight":"300гр","price":550,"calories":520,"allergens":[],"prepTime":"20 мин"},
+      {"name":"Бейденже на угле","weight":"300гр","price":550,"calories":510,"allergens":[],"prepTime":"20 мин"},
+      {"name":"Курдюмба на сковородке","weight":"200гр","price":550,"calories":480,"allergens":[],"prepTime":"18 мин"},
+      {"name":"Лаваш","weight":"2шт","price":250,"calories":360,"allergens":["Глютен"],"prepTime":"10 мин"},
+      {"name":"Бейденже с ножом","weight":"2шт","price":250,"calories":360,"allergens":[],"prepTime":"10 мин"}
+    ]},
+    {"slug":"plov","title":"Шах плов","image":"https://images.unsplash.com/photo-1694886378470-9f6d67f6cde7?q=80&w=1200&auto=format&fit=crop","items":[
+      {"name":"Бейденже","weight":"300гр","price":300,"calories":360,"allergens":[],"prepTime":"15 мин"},
+      {"name":"Говядина","weight":"300гр","price":300,"calories":360,"allergens":[],"prepTime":"15 мин"},
+      {"name":"Свинина","weight":"300гр","price":300,"calories":370,"allergens":[],"prepTime":"15 мин"},
+      {"name":"Курица","weight":"300гр","price":300,"calories":320,"allergens":[],"prepTime":"15 мин"}
+    ]},
+    {"slug":"garnish","title":"Гарниры","image":"https://images.unsplash.com/photo-1518977676601-b53f82aba655?q=80&w=1200&auto=format&fit=crop","items":[
+      {"name":"Картофель по-домашнему","weight":"200гр","price":200,"calories":230,"allergens":["Без лактозы"],"prepTime":"12 мин"},
+      {"name":"Картофель по-грилью","weight":"200гр","price":300,"calories":220,"allergens":["Без лактозы"],"prepTime":"12 мин"},
+      {"name":"Картофель фри","weight":"200гр","price":300,"calories":300,"allergens":["Без лактозы"],"prepTime":"12 мин"},
+      {"name":"Рис отварной","weight":"200гр","price":200,"calories":180,"allergens":["Без глютена"],"prepTime":"10 мин"},
+      {"name":"Гречка","weight":"200гр","price":200,"calories":190,"allergens":["Без глютена"],"prepTime":"10 мин"},
+      {"name":"Макароны","weight":"200гр","price":200,"calories":210,"allergens":["Глютен"],"prepTime":"10 мин"},
+      {"name":"Чечевица","weight":"200гр","price":200,"calories":170,"allergens":["Без глютена"],"prepTime":"10 мин"}
+    ]},
+    {"slug":"beer-snacks","title":"Закуски к пиву","image":"https://images.unsplash.com/photo-1468476396571-4d6f2a427ee7?q=80&w=1200&auto=format&fit=crop","items":[
+      {"name":"Кусочки соленой рыбы","weight":"100гр","price":400,"calories":220,"allergens":["Рыба"],"prepTime":"8 мин"},
+      {"name":"Кусочки копченой рыбы","weight":"100гр","price":400,"calories":240,"allergens":["Рыба"],"prepTime":"8 мин"},
+      {"name":"Кусочки жареной рыбы","weight":"100гр","price":400,"calories":260,"allergens":["Рыба"],"prepTime":"8 мин"},
+      {"name":"Хлебцы по-казахстански","weight":"100гр","price":350,"calories":250,"allergens":["Глютен"],"prepTime":"8 мин"},
+      {"name":"Хлебцы по-узбекски","weight":"100гр","price":350,"calories":250,"allergens":["Глютен"],"prepTime":"8 мин"},
+      {"name":"Батончик","weight":"1шт","price":100,"calories":180,"allergens":["Глютен"],"prepTime":"5 мин"},
+      {"name":"Лаваш тонкий","weight":"1шт","price":100,"calories":170,"allergens":["Глютен"],"prepTime":"5 мин"},
+      {"name":"Чипсы картофельные","weight":"300гр","price":120,"calories":450,"allergens":[],"prepTime":"5 мин"},
+      {"name":"Чипсы овощные","weight":"300гр","price":120,"calories":380,"allergens":[],"prepTime":"5 мин"}
+    ]},
+    {"slug":"sauces","title":"Соусы","image":"https://images.unsplash.com/photo-1525755662778-989d0524087e?q=80&w=1200&auto=format&fit=crop","items":[
+      {"name":"Аджыка","weight":"80гр","price":100,"calories":60,"allergens":[],"prepTime":"3 мин"},
+      {"name":"Нутелла","weight":"80гр","price":100,"calories":420,"allergens":["Орехи","Лактоза"],"prepTime":"3 мин"},
+      {"name":"Сметана","weight":"80гр","price":100,"calories":150,"allergens":["Лактоза"],"prepTime":"3 мин"},
+      {"name":"Тартар","weight":"80гр","price":100,"calories":180,"allergens":["Яйцо"],"prepTime":"3 мин"},
+      {"name":"Чесночный","weight":"80гр","price":100,"calories":170,"allergens":[],"prepTime":"3 мин"}
+    ]},
+    {"slug":"cold","title":"Холодные закуски","image":"https://images.unsplash.com/photo-1485963631004-f2f00b1d6606?q=80&w=1200&auto=format&fit=crop","items":[
+      {"name":"Бийский букет","weight":"500гр","price":950,"calories":690,"allergens":[],"prepTime":"12 мин"},
+      {"name":"Зелень в ассортименте","weight":"100гр","price":450,"calories":80,"allergens":["Без глютена","Без лактозы"],"prepTime":"8 мин"},
+      {"name":"Овшаяна карехака","weight":"250гр","price":450,"calories":240,"allergens":[],"prepTime":"10 мин"},
+      {"name":"Мясное ассорти","weight":"300гр","price":1250,"calories":700,"allergens":[],"prepTime":"10 мин"},
+      {"name":"Рыбное ассорти","weight":"250гр","price":1950,"calories":550,"allergens":["Рыба"],"prepTime":"10 мин"},
+      {"name":"Русский равиолосол","weight":"300гр","price":480,"calories":320,"allergens":["Глютен"],"prepTime":"10 мин"},
+      {"name":"Ассорти Кавказ","weight":"250гр","price":720,"calories":420,"allergens":[],"prepTime":"10 мин"},
+      {"name":"Еврейская сала","weight":"250гр","price":875,"calories":450,"allergens":[],"prepTime":"10 мин"},
+      {"name":"Фод-дек с сырами","weight":"150гр","price":450,"calories":390,"allergens":["Лактоза"],"prepTime":"10 мин"},
+      {"name":"Рулетики из баклажанов с орехами","weight":"150гр","price":520,"calories":300,"allergens":["Орехи"],"prepTime":"10 мин"},
+      {"name":"Икра в тартелетках","weight":"200гр","price":410,"calories":330,"allergens":["Рыба","Глютен"],"prepTime":"10 мин"},
+      {"name":"Сельдь слабосоленая","weight":"100гр","price":655,"calories":280,"allergens":["Рыба"],"prepTime":"8 мин"},
+      {"name":"Рыжка атлантическая","weight":"150гр","price":275,"calories":260,"allergens":["Рыба"],"prepTime":"8 мин"},
+      {"name":"Маслины/Оливки","weight":"80гр","price":120,"calories":140,"allergens":["Без глютена"],"prepTime":"5 мин"},
+      {"name":"Лимон","weight":"200гр","price":680,"calories":40,"allergens":["Без глютена","Без лактозы"],"prepTime":"5 мин"},
+      {"name":"Рулетики филadelphia","weight":"100гр","price":385,"calories":260,"allergens":["Лактоза"],"prepTime":"8 мин"},
+      {"name":"Сыр Чечил","weight":"100гр","price":345,"calories":290,"allergens":["Лактоза"],"prepTime":"5 мин"},
+      {"name":"Сыр Азербайджан","weight":"100гр","price":385,"calories":310,"allergens":["Лактоза"],"prepTime":"5 мин"}
+    ]},
+    {"slug":"salaty","title":"Салаты","image":"https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=1200&auto=format&fit=crop","items":[
+      {"name":"Оливье","weight":"200гр","price":450,"calories":320,"allergens":["Яйцо"],"prepTime":"10 мин"},
+      {"name":"Пледо Плухары","weight":"200гр","price":480,"calories":350,"allergens":[],"prepTime":"10 мин"},
+      {"name":"Салат из говядины","weight":"200гр","price":550,"calories":390,"allergens":[],"prepTime":"12 мин"},
+      {"name":"Мангальский салат","weight":"200гр","price":425,"calories":260,"allergens":["Без глютена"],"prepTime":"10 мин"},
+      {"name":"Чобан салат","weight":"250гр","price":480,"calories":210,"allergens":["Без глютена"],"prepTime":"10 мин"},
+      {"name":"Цезарь с семгой","weight":"230гр","price":550,"calories":420,"allergens":["Рыба","Лактоза"],"prepTime":"12 мин"},
+      {"name":"Цезарь с креветками","weight":"230гр","price":670,"calories":430,"allergens":["Морепродукты","Лактоза"],"prepTime":"12 мин"},
+      {"name":"Греческий салат","weight":"230гр","price":630,"calories":300,"allergens":["Лактоза"],"prepTime":"10 мин"},
+      {"name":"Руккола с креветками/семгой","weight":"200гр","price":490,"calories":330,"allergens":["Морепродукты"],"prepTime":"10 мин"},
+      {"name":"Черри, пармезан, соус классический","weight":"200гр","price":590,"calories":300,"allergens":["Лактоза"],"prepTime":"10 мин"}
+    ]},
+    {"slug":"napitki","title":"Напитки","image":"https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=80&w=1200&auto=format&fit=crop","items":[
+      {"name":"Чай ассорти","weight":"1шарм","price":1000,"calories":30,"allergens":[],"prepTime":"8 мин"},
+      {"name":"Кофе эспрессо","weight":"1шарм","price":170,"calories":10,"allergens":[],"prepTime":"5 мин"},
+      {"name":"Американо","weight":"1шарм","price":170,"calories":15,"allergens":[],"prepTime":"5 мин"},
+      {"name":"Вода без газа","weight":"250мл","price":200,"calories":0,"allergens":[],"prepTime":"1 мин"},
+      {"name":"Вода с газом","weight":"250мл","price":200,"calories":0,"allergens":[],"prepTime":"1 мин"},
+      {"name":"Кока-Кола","weight":"0.33л","price":250,"calories":150,"allergens":[],"prepTime":"1 мин"},
+      {"name":"Фанта","weight":"0.33л","price":250,"calories":150,"allergens":[],"prepTime":"1 мин"},
+      {"name":"Тархун","weight":"0.5л","price":280,"calories":200,"allergens":[],"prepTime":"1 мин"},
+      {"name":"Лимонад","weight":"0.5л","price":280,"calories":210,"allergens":[],"prepTime":"1 мин"},
+      {"name":"Нагазири","weight":"0.5л","price":320,"calories":210,"allergens":[],"prepTime":"1 мин"},
+      {"name":"Вогатлі","weight":"0.5л","price":300,"calories":190,"allergens":[],"prepTime":"1 мин"},
+      {"name":"Морс домашний","weight":"1л","price":600,"calories":230,"allergens":[],"prepTime":"3 мин"},
+      {"name":"Компот айва","weight":"1л","price":500,"calories":220,"allergens":[],"prepTime":"3 мин"},
+      {"name":"Компот фейхоа","weight":"1л","price":500,"calories":220,"allergens":[],"prepTime":"3 мин"},
+      {"name":"Компот кизил","weight":"1л","price":500,"calories":220,"allergens":[],"prepTime":"3 мин"},
+      {"name":"Компот вишня","weight":"1л","price":500,"calories":220,"allergens":[],"prepTime":"3 мин"},
+      {"name":"Сок яблочный","weight":"1л","price":500,"calories":220,"allergens":[],"prepTime":"3 мин"},
+      {"name":"Сок мультифрукт","weight":"1л","price":500,"calories":220,"allergens":[],"prepTime":"3 мин"},
+      {"name":"Сок персиковый","weight":"1л","price":500,"calories":220,"allergens":[],"prepTime":"3 мин"},
+      {"name":"Сок томатный","weight":"1л","price":500,"calories":220,"allergens":[],"prepTime":"3 мин"},
+      {"name":"Сок сады придонья","weight":"1л","price":500,"calories":220,"allergens":[],"prepTime":"3 мин"}
+    ]},
+    {"slug":"icecream","title":"Мороженное","image":"https://images.unsplash.com/photo-1563805042-7684c019e1cb?q=80&w=1200&auto=format&fit=crop","items":[
+      {"name":"Ванильное","weight":"1шарм","price":80,"calories":180,"allergens":["Лактоза"],"prepTime":"2 мин"},
+      {"name":"Шоколадное","weight":"1шарм","price":80,"calories":190,"allergens":["Лактоза"],"prepTime":"2 мин"},
+      {"name":"Клубничное","weight":"1шарм","price":80,"calories":185,"allergens":["Лактоза"],"prepTime":"2 мин"}
+    ]},
+    {"slug":"deserty","title":"Десерты","image":"https://images.unsplash.com/photo-1488477181946-6428a0291777?q=80&w=1200&auto=format&fit=crop","items":[
+      {"name":"Чикейк три шоколада","weight":"1шт","price":285,"calories":380,"allergens":["Лактоза","Глютен"],"prepTime":"5 мин"},
+      {"name":"Чикейк нью-йорк классический","weight":"1шт","price":285,"calories":360,"allergens":["Лактоза","Глютен"],"prepTime":"5 мин"},
+      {"name":"Чикейк карамельный","weight":"1шт","price":285,"calories":390,"allergens":["Лактоза","Глютен"],"prepTime":"5 мин"},
+      {"name":"Тирамису","weight":"1шт","price":285,"calories":350,"allergens":["Лактоза","Глютен"],"prepTime":"5 мин"},
+      {"name":"Фруктовая ваза","weight":"1.5кг","price":2000,"calories":250,"allergens":["Без глютена","Без лактозы"],"prepTime":"10 мин"},
+      {"name":"Нарезка фруктовая","weight":"700гр","price":1000,"calories":160,"allergens":["Без глютена","Без лактозы"],"prepTime":"10 мин"}
+    ]},
+    {"slug":"bar","title":"Барная карта (пиво и вино)","image":"https://images.unsplash.com/photo-1514361892635-6b07e31e75f9?q=80&w=1200&auto=format&fit=crop","isBar":true,"items":[
+      {"name":"Пиво светлое разливное","weight":"0.5л","price":320,"calories":210,"allergens":["Глютен"],"prepTime":"2 мин","isBar":true},
+      {"name":"Пиво темное разливное","weight":"0.5л","price":340,"calories":230,"allergens":["Глютен"],"prepTime":"2 мин","isBar":true},
+      {"name":"Пиво безалкогольное","weight":"0.5л","price":290,"calories":160,"allergens":["Глютен"],"prepTime":"2 мин","isBar":true},
+      {"name":"Вино красное сухое","weight":"150мл","price":390,"calories":130,"allergens":[],"prepTime":"2 мин","isBar":true},
+      {"name":"Вино белое сухое","weight":"150мл","price":390,"calories":120,"allergens":[],"prepTime":"2 мин","isBar":true}
+    ]}
+  ]
+}
